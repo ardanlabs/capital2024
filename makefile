@@ -12,6 +12,15 @@ run-build:
 	go run -ldflags "-X main.build=$(shell git rev-parse --short HEAD)" api/cmd/services/sales/main.go | go run api/cmd/tooling/logfmt/main.go
 
 # ==============================================================================
+# Metrics and Tracing
+
+metrics-view-sc:
+	expvarmon -ports="localhost:3010" -vars="build,requests,goroutines,errors,panics,mem:memstats.HeapAlloc,mem:memstats.HeapSys,mem:memstats.Sys"
+
+statsviz:
+	open -a "Google Chrome" http://localhost:3010/debug/statsviz
+
+# ==============================================================================
 # Modules support
 
 tidy:
