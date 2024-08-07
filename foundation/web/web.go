@@ -11,6 +11,10 @@ type Encoder interface {
 	Encode() (data []byte, contentType string, err error)
 }
 
+// Logger represents a function that will be called to add information
+// to the logs.
+type Logger func(ctx context.Context, msg string, args ...any)
+
 // HandlerFunc represents a function that handles a http request within our own
 // little mini framework.
 type HandlerFunc func(ctx context.Context, r *http.Request) Encoder
@@ -20,12 +24,14 @@ type HandlerFunc func(ctx context.Context, r *http.Request) Encoder
 // data/logic on this App struct.
 type App struct {
 	*http.ServeMux
+	log Logger
 }
 
 // NewApp creates an App value that handle a set of routes for the application.
-func NewApp() *App {
+func NewApp(log Logger) *App {
 	return &App{
 		ServeMux: http.NewServeMux(),
+		log:      log,
 	}
 }
 
@@ -37,19 +43,11 @@ func (a *App) HandleFunc(pattern string, handlerFunc HandlerFunc) {
 
 		// WE CAN DO WHAT WE WANT HERE
 
-		encoder := handlerFunc(r.Context(), r)
+		ctx := r.Context()
 
-		data, contentType, err := encoder.Encode()
-
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", contentType)
-		w.WriteHeader(http.StatusOK)
-
-		if _, err := w.Write(data); err != nil {
+		resp := handlerFunc(ctx, r)
+		if err := Respond(ctx, w, resp); err != nil {
+			a.log(ctx, "web-respond", "ERROR", err)
 			return
 		}
 
