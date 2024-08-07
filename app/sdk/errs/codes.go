@@ -112,6 +112,9 @@ var (
 	// futhur requests.
 	TooManyRequests = ErrCode{value: 18}
 
+	// InternalOnlyLog errors. Means some invariants expected by underlying
+	// system has been broken. If you see one of these errors,
+	// something is very broken. The error message is not sent to the client.
 	InternalOnlyLog = ErrCode{value: 19}
 )
 
