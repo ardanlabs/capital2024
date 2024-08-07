@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/ardanlabs/service/api/domain/http/testapi"
+	"github.com/ardanlabs/service/api/sdk/http/mid"
 	"github.com/ardanlabs/service/foundation/logger"
 	"github.com/ardanlabs/service/foundation/web"
 )
@@ -14,7 +15,7 @@ func WebAPI(log *logger.Logger) *web.App {
 		log.Info(ctx, msg, args...)
 	}
 
-	app := web.NewApp(logger)
+	app := web.NewApp(logger, mid.Logger(log))
 
 	testapi.Routes(app)
 

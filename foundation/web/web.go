@@ -25,19 +25,23 @@ type HandlerFunc func(ctx context.Context, r *http.Request) Encoder
 type App struct {
 	*http.ServeMux
 	log Logger
+	mw  []MidFunc
 }
 
 // NewApp creates an App value that handle a set of routes for the application.
-func NewApp(log Logger) *App {
+func NewApp(log Logger, mw ...MidFunc) *App {
 	return &App{
 		ServeMux: http.NewServeMux(),
 		log:      log,
+		mw:       mw,
 	}
 }
 
 // HandleFunc sets a handler function for a given HTTP method and path pair
 // to the application server mux.
-func (a *App) HandleFunc(pattern string, handlerFunc HandlerFunc) {
+func (a *App) HandleFunc(pattern string, handlerFunc HandlerFunc, mw ...MidFunc) {
+	handlerFunc = wrapMiddleware(mw, handlerFunc)
+	handlerFunc = wrapMiddleware(a.mw, handlerFunc)
 
 	h := func(w http.ResponseWriter, r *http.Request) {
 
