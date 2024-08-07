@@ -22,6 +22,7 @@ func (s status) Encode() ([]byte, string, error) {
 
 func test(ctx context.Context, r *http.Request) web.Encoder {
 	if n := rand.Intn(100); n%2 == 0 {
+		panic("OHHH NOOOOOO")
 		return errs.Newf(errs.InvalidArgument, "You are very bad: %s", "Bill")
 	}
 

@@ -39,6 +39,10 @@ func Error(log *logger.Logger) web.MidFunc {
 				"source_err_file", path.Base(appErr.FileName),
 				"source_err_func", path.Base(appErr.FuncName))
 
+			if appErr.Code == errs.InternalOnlyLog {
+				appErr = errs.Newf(errs.Internal, "Internal Server Error")
+			}
+
 			// Send the error to the transport package so the error can be
 			// used as the response.
 

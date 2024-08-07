@@ -15,7 +15,7 @@ func WebAPI(log *logger.Logger) *web.App {
 		log.Info(ctx, msg, args...)
 	}
 
-	app := web.NewApp(logger, mid.Logger(log), mid.Error(log))
+	app := web.NewApp(logger, mid.Logger(log), mid.Error(log), mid.Panic())
 
 	testapi.Routes(app)
 

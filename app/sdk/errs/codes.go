@@ -111,6 +111,8 @@ var (
 	// exceeded their rate limit and/or quota and must wait before making
 	// futhur requests.
 	TooManyRequests = ErrCode{value: 18}
+
+	InternalOnlyLog = ErrCode{value: 19}
 )
 
 var codeNumbers = map[string]ErrCode{
@@ -133,6 +135,7 @@ var codeNumbers = map[string]ErrCode{
 	"data_loss":           DataLoss,
 	"unauthenticated":     Unauthenticated,
 	"too_many_requests":   TooManyRequests,
+	"internal_only_log":   InternalOnlyLog,
 }
 
 var codeNames = map[ErrCode]string{
@@ -155,6 +158,7 @@ var codeNames = map[ErrCode]string{
 	DataLoss:           "data_loss",
 	Unauthenticated:    "unauthenticated",
 	TooManyRequests:    "too_many_requests",
+	InternalOnlyLog:    "internal_only_log",
 }
 
 var httpStatus = map[ErrCode]int{
@@ -177,4 +181,5 @@ var httpStatus = map[ErrCode]int{
 	DataLoss:           http.StatusInternalServerError,
 	Unauthenticated:    http.StatusUnauthorized,
 	TooManyRequests:    http.StatusTooManyRequests,
+	InternalOnlyLog:    http.StatusInternalServerError,
 }
