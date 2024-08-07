@@ -3,6 +3,8 @@ package web
 import (
 	"context"
 	"net/http"
+
+	"github.com/google/uuid"
 )
 
 // Encoder defines behavior that can encode a data model and provide
@@ -44,18 +46,13 @@ func (a *App) HandleFunc(pattern string, handlerFunc HandlerFunc, mw ...MidFunc)
 	handlerFunc = wrapMiddleware(a.mw, handlerFunc)
 
 	h := func(w http.ResponseWriter, r *http.Request) {
-
-		// WE CAN DO WHAT WE WANT HERE
-
-		ctx := r.Context()
+		ctx := setTraceID(r.Context(), uuid.NewString())
 
 		resp := handlerFunc(ctx, r)
 		if err := Respond(ctx, w, resp); err != nil {
 			a.log(ctx, "web-respond", "ERROR", err)
 			return
 		}
-
-		// WE CAN DO WHAT WE WANT HERE
 	}
 
 	a.ServeMux.HandleFunc(pattern, h)
