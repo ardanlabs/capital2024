@@ -3,8 +3,10 @@ package testapi
 import (
 	"context"
 	"encoding/json"
+	"math/rand"
 	"net/http"
 
+	"github.com/ardanlabs/service/app/sdk/errs"
 	"github.com/ardanlabs/service/foundation/web"
 )
 
@@ -19,6 +21,10 @@ func (s status) Encode() ([]byte, string, error) {
 }
 
 func test(ctx context.Context, r *http.Request) web.Encoder {
+	if n := rand.Intn(100); n%2 == 0 {
+		return errs.Newf(errs.InvalidArgument, "You are very bad: %s", "Bill")
+	}
+
 	status := status{
 		Status: "OK",
 	}
