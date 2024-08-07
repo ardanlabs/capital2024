@@ -11,6 +11,9 @@ run-help:
 run-build:
 	go run -ldflags "-X main.build=$(shell git rev-parse --short HEAD)" api/cmd/services/sales/main.go | go run api/cmd/tooling/logfmt/main.go
 
+curl-test:
+	curl -i -X GET http://localhost:3000/test
+
 # ==============================================================================
 # Metrics and Tracing
 
