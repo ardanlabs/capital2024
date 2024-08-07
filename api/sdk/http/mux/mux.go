@@ -1,24 +1,15 @@
 package mux
 
 import (
-	"encoding/json"
-	"net/http"
+	"github.com/ardanlabs/service/api/domain/http/testapi"
+	"github.com/ardanlabs/service/foundation/web"
 )
 
 // WebAPI constructs a http.Handler with all application routes bound.
-func WebAPI() *http.ServeMux {
-	mux := http.NewServeMux()
+func WebAPI() *web.App {
+	app := web.NewApp()
 
-	h := func(w http.ResponseWriter, r *http.Request) {
-		status := struct {
-			Status string
-		}{
-			Status: "OK",
-		}
-		json.NewEncoder(w).Encode(status)
-	}
+	testapi.Routes(app)
 
-	mux.HandleFunc("GET /test", h)
-
-	return mux
+	return app
 }
