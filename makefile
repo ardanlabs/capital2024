@@ -29,3 +29,12 @@ statsviz:
 tidy:
 	go mod tidy
 	go mod vendor
+
+# ==============================================================================
+# Docker Compose
+
+compose-up:
+	cd ./zarf/compose/ && docker compose -f docker_compose.yaml -p compose up -d
+
+pgcli:
+	pgcli postgresql://postgres:postgres@localhost

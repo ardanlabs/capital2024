@@ -8,6 +8,9 @@
 *.so
 *.dylib
 
+database-data/
+pg_hba.conf/
+
 # Test binary, built with `go test -c`
 *.test
 
