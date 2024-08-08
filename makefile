@@ -36,5 +36,8 @@ tidy:
 compose-up:
 	cd ./zarf/compose/ && docker compose -f docker_compose.yaml -p compose up -d
 
+compose-down:
+	cd ./zarf/compose/ && docker compose -f docker_compose.yaml down
+
 pgcli:
 	pgcli postgresql://postgres:postgres@localhost
